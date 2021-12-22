@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package types;
+option go_package = "github.com/x0y14/msnger/pkg/protobuf";
+
+import "google/protobuf/timestamp.proto";
+
+// talk
+enum MessageType {
+  TEXT = 0;
+
+  IMAGE = 1;
+  VIDEO = 2;
+  GIF = 3;
+
+  CONTACT = 4;
+  LOCATION = 5;
+}
+
+message Message {
+  // message id
+  string id = 1;
+  // receiver id
+  string to = 2;
+  // sender id
+  string from = 3;
+  // 作成日時
+  google.protobuf.Timestamp createdAt = 4;
+
+  // どんな種類
+  MessageType contentType = 10;
+  // text
+  string text = 11;
+  // json
+  map<string, string> metadata = 12;
+}
+
+
+// user
+message User {
+  string id = 1;
+  string displayName = 2;
+  string statusText = 3;
+  string pictureUrl = 4;
+}
+
+
+// op
+enum OperationType {
+  NOOP = 0;
+}
+
+message Operation {
+  int32 revisionId = 1;
+  OperationType type = 2;
+  string param1 = 3;
+  string param2 = 4;
+  string param3 = 5;
+  Message msg = 6;
+  google.protobuf.Timestamp createdAt = 7;
+}
+
+message OperationInfo {
+  int32 revisionId = 1;
+  string target = 2;
+}

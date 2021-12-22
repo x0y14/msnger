@@ -1,0 +1,51 @@
+create table msnger.Operation
+(
+    revisionId bigint unsigned NOT NULL,
+    type       int       NOT NULL,
+    param1     varchar(50),
+    param2     varchar(50),
+    param3     varchar(50),
+    msgId      varchar(21),
+
+    createdAt  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedAt  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    primary key (revisionId)
+);
+
+create table msnger.OperationInfo
+(
+    id         int auto_increment NOT NULL,
+    revisionId bigint unsigned NOT NULL,
+    target     varchar(21) NOT NULL,
+
+    primary key (id)
+);
+
+create table msnger.Message
+(
+    id          varchar(21) NOT NULL,
+    `to`        varchar(21) NOT NULL,
+    `from`      varchar(21) NOT NULL,
+    contentType int         NOT NULL,
+    text        varchar(1000),
+    metadata    json        NOT NULL DEFAULT (JSON_OBJECT()),
+
+    createdAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    primary key (id)
+);
+
+create table msnger.User
+(
+    id          varchar(21) NOT NULL,
+    displayName varchar(30) NOT NULL,
+    statusText  text,
+    pictureUrl  text,
+
+    createdAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    primary key (id)
+);

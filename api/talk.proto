@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package talk;
+//import "types.proto";
+option go_package = "github.com/x0y14/msnger/pkg/protobuf";
+
+
+
+message SendMessageRequest {}
+message SendMessageResult  {}
+
+message SendReadReceiptRequest {}
+message SendReadReceiptResult {}
+
+
+
+service TalkService {
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResult) {}
+}

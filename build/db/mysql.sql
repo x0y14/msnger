@@ -49,3 +49,16 @@ create table msnger.User
 
     primary key (id)
 );
+
+create table msnger.Account
+(
+    id varchar(21) NOT NULL,
+    email varchar(300) UNIQUE NOT NULL,
+    password text NOT NULL,
+    isAdmin bit NOT NULL DEFAULT 0,
+
+    createdAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    primary key(id)
+);

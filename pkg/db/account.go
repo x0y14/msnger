@@ -49,16 +49,18 @@ func InsertAccount(req *InsertAccountReq) error {
 func SelectAccountWithId(req *SelectAccountReq) (*protobuf.Account, error) {
 	row := MsngerDB.QueryRow(`select id, email, password, isAdmin, createdAt, updatedAt from msnger.Account where id = ? limit 1`, req.Id)
 
-	if row.Err() == sql.ErrNoRows {
-		return nil, nil
-	}
-
-	if row.Err() != nil && row.Err() != sql.ErrNoRows {
+	if row.Err() != nil {
+		if row.Err() == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, row.Err()
 	}
 
 	ad := AccountData{}
 	if err := row.Scan(&ad.Id, &ad.Email, &ad.Password, &ad.isAdmin, &ad.CreatedAt, &ad.UpdatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 
@@ -84,16 +86,18 @@ func SelectAccountWithId(req *SelectAccountReq) (*protobuf.Account, error) {
 func SelectAccountWithEmail(req *SelectAccountReq) (*protobuf.Account, error) {
 	row := MsngerDB.QueryRow(`select id, email, password, isAdmin, createdAt, updatedAt from msnger.Account where email = ? limit 1`, req.Email)
 
-	if row.Err() == sql.ErrNoRows {
-		return nil, nil
-	}
-
-	if row.Err() != nil && row.Err() != sql.ErrNoRows {
+	if row.Err() != nil {
+		if row.Err() == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, row.Err()
 	}
 
 	ad := AccountData{}
 	if err := row.Scan(&ad.Id, &ad.Email, &ad.Password, &ad.isAdmin, &ad.CreatedAt, &ad.UpdatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 

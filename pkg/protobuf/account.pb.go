@@ -21,6 +21,7 @@ const (
 )
 
 // [NO-AUTH] CreateAccount ( CreateAccountRequest ) -> CreateAccountResult
+// insert
 type CreateAccountRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -132,6 +133,7 @@ func (x *CreateAccountResult) GetJwt() string {
 }
 
 // [NO-AUTH] Login ( LoginRequest ) -> LoginResult
+// select
 type LoginRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -243,6 +245,7 @@ func (x *LoginResult) GetJwt() string {
 }
 
 // [AUTH] GetEmail ( GetEmailRequest ) -> GetEmailResult
+// select
 type GetEmailRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

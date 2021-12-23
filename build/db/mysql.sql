@@ -13,7 +13,7 @@ create table msnger.Operation
     primary key (revisionId)
 );
 
-create table msnger.OperationInfo
+create table msnger.OpRelation
 (
     id           int auto_increment NOT NULL,
     revisionId   bigint unsigned NOT NULL,
@@ -61,4 +61,12 @@ create table msnger.Account
     updatedAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     primary key(id)
+);
+
+create table msnger.LastRevision
+(
+    id varchar(21) NOT NULL,
+    lastRevisionId bigint unsigned NOT NULL DEFAULT 0,
+
+    primary key (id)
 );

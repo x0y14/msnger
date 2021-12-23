@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package user;
+option go_package = "github.com/x0y14/msnger/pkg/protobuf";
+
+import "types.proto";
+
+
+// [AUTH] CreateUser ( CreateUserRequest ) -> User
+message CreateUserRequest {
+  types.User user = 1;
+}
+
+// [AUTH] GetUser ( GetUserRequest : UserId ) -> User
+message GetUserRequest {
+  string userId = 1;
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (types.User) {}
+  rpc GetUser(GetUserRequest) returns (types.User) {}
+}

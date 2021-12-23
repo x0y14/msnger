@@ -19,7 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OpServiceClient interface {
 	FetchOps(ctx context.Context, in *FetchOpsRequest, opts ...grpc.CallOption) (OpService_FetchOpsClient, error)
-	SendOp(ctx context.Context, in *SendOpRequest, opts ...grpc.CallOption) (*SendOpResult, error)
+	SendOp(ctx context.Context, in *SendOpRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type opServiceClient struct {
@@ -62,8 +62,8 @@ func (x *opServiceFetchOpsClient) Recv() (*Operation, error) {
 	return m, nil
 }
 
-func (c *opServiceClient) SendOp(ctx context.Context, in *SendOpRequest, opts ...grpc.CallOption) (*SendOpResult, error) {
-	out := new(SendOpResult)
+func (c *opServiceClient) SendOp(ctx context.Context, in *SendOpRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/op.OpService/SendOp", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (c *opServiceClient) SendOp(ctx context.Context, in *SendOpRequest, opts ..
 // for forward compatibility
 type OpServiceServer interface {
 	FetchOps(*FetchOpsRequest, OpService_FetchOpsServer) error
-	SendOp(context.Context, *SendOpRequest) (*SendOpResult, error)
+	SendOp(context.Context, *SendOpRequest) (*Operation, error)
 	mustEmbedUnimplementedOpServiceServer()
 }
 
@@ -87,7 +87,7 @@ type UnimplementedOpServiceServer struct {
 func (UnimplementedOpServiceServer) FetchOps(*FetchOpsRequest, OpService_FetchOpsServer) error {
 	return status.Errorf(codes.Unimplemented, "method FetchOps not implemented")
 }
-func (UnimplementedOpServiceServer) SendOp(context.Context, *SendOpRequest) (*SendOpResult, error) {
+func (UnimplementedOpServiceServer) SendOp(context.Context, *SendOpRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendOp not implemented")
 }
 func (UnimplementedOpServiceServer) mustEmbedUnimplementedOpServiceServer() {}

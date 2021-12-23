@@ -6,14 +6,18 @@ option go_package = "github.com/x0y14/msnger/pkg/protobuf";
 import "types.proto";
 
 
+// [AUTH] FetchOps (FetchOpsRequest) -> stream Operation
 message FetchOpsRequest {
   int32 lastRevisionId = 1;
 }
 
-message SendOpRequest {}
-message SendOpResult {}
+// [AUTH, ADMIN] SendOp (SendOpRequest) -> Operation
+message SendOpRequest {
+  types.Operation op = 1;
+}
+
 
 service OpService {
   rpc FetchOps(FetchOpsRequest) returns (stream types.Operation) {}
-  rpc SendOp(SendOpRequest) returns (SendOpResult) {}
+  rpc SendOp(SendOpRequest) returns (types.Operation) {}
 }

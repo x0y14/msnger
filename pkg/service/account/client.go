@@ -1,4 +1,4 @@
-package op
+package account
 
 import (
 	pb "github.com/x0y14/msnger/pkg/protobuf"
@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func CreateClient(addr string) *pb.OpServiceClient {
+func CreateClient(addr string) *pb.AccountServiceClient {
 
 	creds := insecure.NewCredentials()
 
@@ -16,6 +16,6 @@ func CreateClient(addr string) *pb.OpServiceClient {
 		log.Fatalf("failed to connect server: %v : %v", addr, err)
 	}
 
-	client := pb.NewOpServiceClient(conn)
+	client := pb.NewAccountServiceClient(conn)
 	return &client
 }

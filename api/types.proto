@@ -24,15 +24,15 @@ message Message {
   string to = 2;
   // sender id
   string from = 3;
-  // 作成日時
-  google.protobuf.Timestamp createdAt = 4;
-
   // どんな種類
   MessageType contentType = 10;
   // text
   string text = 11;
   // json
   map<string, string> metadata = 12;
+
+  google.protobuf.Timestamp createdAt = 20;
+  google.protobuf.Timestamp updatedAt = 21;
 }
 
 
@@ -42,12 +42,18 @@ message User {
   string displayName = 2;
   string statusText = 3;
   string pictureUrl = 4;
+
+  google.protobuf.Timestamp createdAt = 20;
+  google.protobuf.Timestamp updatedAt = 21;
 }
 
 
 // op
 enum OperationType {
   NOOP = 0;
+  // user 100~
+  LOGIN = 100;
+
 }
 
 message Operation {
@@ -56,11 +62,13 @@ message Operation {
   string param1 = 3;
   string param2 = 4;
   string param3 = 5;
-  Message msg = 6;
-  google.protobuf.Timestamp createdAt = 7;
+  Message message = 6;
+
+  google.protobuf.Timestamp createdAt = 20;
+  google.protobuf.Timestamp updatedAt = 21;
 }
 
 message OperationInfo {
   int32 revisionId = 1;
-  string target = 2;
+  string targetUserId = 2;
 }

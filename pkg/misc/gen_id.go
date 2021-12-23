@@ -1,4 +1,4 @@
-package op
+package misc
 
 import (
 	"github.com/godruoyi/go-snowflake"

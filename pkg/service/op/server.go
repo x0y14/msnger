@@ -24,6 +24,7 @@ func (s *ServiceServer) FetchOps(req *pb.FetchOpsRequest, stream pb.OpService_Fe
 	}
 	return err
 }
-func (s *ServiceServer) SendOp(ctx context.Context, req *pb.SendOpRequest) (*pb.SendOpResult, error) {
-	return &pb.SendOpResult{}, nil
+func (s *ServiceServer) SendOp(ctx context.Context, req *pb.SendOpRequest) (*pb.Operation, error) {
+	//metadata.FromIncomingContext(ctx)
+	return &pb.Operation{}, nil
 }

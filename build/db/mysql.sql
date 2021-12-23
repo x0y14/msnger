@@ -5,7 +5,7 @@ create table msnger.Operation
     param1     varchar(50),
     param2     varchar(50),
     param3     varchar(50),
-    msgId      varchar(21),
+    messageId  varchar(21),
 
     createdAt  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -15,9 +15,9 @@ create table msnger.Operation
 
 create table msnger.OperationInfo
 (
-    id         int auto_increment NOT NULL,
-    revisionId bigint unsigned NOT NULL,
-    target     varchar(21) NOT NULL,
+    id           int auto_increment NOT NULL,
+    revisionId   bigint unsigned NOT NULL,
+    targetUserId varchar(21) NOT NULL,
 
     primary key (id)
 );

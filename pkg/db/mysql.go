@@ -3,8 +3,8 @@ package db
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	op2 "github.com/x0y14/msnger/pkg/misc"
 	"github.com/x0y14/msnger/pkg/protobuf"
-	op2 "github.com/x0y14/msnger/pkg/service/op"
 	"log"
 	"time"
 )

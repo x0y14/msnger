@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package account;
+option go_package = "github.com/x0y14/msnger/pkg/protobuf";
+
+//import "types.proto";
+
+
+// [NO-AUTH] CreateAccount ( CreateAccountRequest ) -> CreateAccountResult
+message CreateAccountRequest {
+  string email = 1;
+  string password = 2;
+}
+message CreateAccountResult {
+  string userId = 1;
+  string jwt = 2;
+}
+
+// [NO-AUTH] Login ( LoginRequest ) -> LoginResult
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+message LoginResult {
+  string userId = 1;
+  string jwt = 2;
+}
+
+// [AUTH] GetEmail ( GetEmailRequest ) -> GetEmailResult
+message GetEmailRequest {}
+message GetEmailResult {
+  string email = 1;
+}
+
+service AccountService {
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResult) {}
+  rpc Login(LoginRequest) returns (LoginResult) {}
+  rpc GetEmail(GetEmailRequest) returns (GetEmailResult) {}
+}

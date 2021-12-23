@@ -18,7 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TalkServiceClient interface {
-	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResult, error)
+	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Message, error)
+	SendReadReceipt(ctx context.Context, in *SendReadReceiptRequest, opts ...grpc.CallOption) (*SendReadReceiptResult, error)
 }
 
 type talkServiceClient struct {
@@ -29,9 +30,18 @@ func NewTalkServiceClient(cc grpc.ClientConnInterface) TalkServiceClient {
 	return &talkServiceClient{cc}
 }
 
-func (c *talkServiceClient) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResult, error) {
-	out := new(SendMessageResult)
+func (c *talkServiceClient) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*Message, error) {
+	out := new(Message)
 	err := c.cc.Invoke(ctx, "/talk.TalkService/SendMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *talkServiceClient) SendReadReceipt(ctx context.Context, in *SendReadReceiptRequest, opts ...grpc.CallOption) (*SendReadReceiptResult, error) {
+	out := new(SendReadReceiptResult)
+	err := c.cc.Invoke(ctx, "/talk.TalkService/SendReadReceipt", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +52,8 @@ func (c *talkServiceClient) SendMessage(ctx context.Context, in *SendMessageRequ
 // All implementations must embed UnimplementedTalkServiceServer
 // for forward compatibility
 type TalkServiceServer interface {
-	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResult, error)
+	SendMessage(context.Context, *SendMessageRequest) (*Message, error)
+	SendReadReceipt(context.Context, *SendReadReceiptRequest) (*SendReadReceiptResult, error)
 	mustEmbedUnimplementedTalkServiceServer()
 }
 
@@ -50,8 +61,11 @@ type TalkServiceServer interface {
 type UnimplementedTalkServiceServer struct {
 }
 
-func (UnimplementedTalkServiceServer) SendMessage(context.Context, *SendMessageRequest) (*SendMessageResult, error) {
+func (UnimplementedTalkServiceServer) SendMessage(context.Context, *SendMessageRequest) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedTalkServiceServer) SendReadReceipt(context.Context, *SendReadReceiptRequest) (*SendReadReceiptResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendReadReceipt not implemented")
 }
 func (UnimplementedTalkServiceServer) mustEmbedUnimplementedTalkServiceServer() {}
 
@@ -84,6 +98,24 @@ func _TalkService_SendMessage_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TalkService_SendReadReceipt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendReadReceiptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TalkServiceServer).SendReadReceipt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/talk.TalkService/SendReadReceipt",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TalkServiceServer).SendReadReceipt(ctx, req.(*SendReadReceiptRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TalkService_ServiceDesc is the grpc.ServiceDesc for TalkService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +126,10 @@ var TalkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendMessage",
 			Handler:    _TalkService_SendMessage_Handler,
+		},
+		{
+			MethodName: "SendReadReceipt",
+			Handler:    _TalkService_SendReadReceipt_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

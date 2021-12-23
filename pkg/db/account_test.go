@@ -14,17 +14,16 @@ func TestInsertAccount(t *testing.T) {
 		Email:    "sample2@example.com",
 		Password: "123456",
 	}
-	jwt, err := db.InsertAccount(&req)
+	err := db.InsertAccount(&req)
 	if err != nil {
 		t.Fatal(err)
 	}
-	log.Printf("jwt: %v", jwt)
 }
 
 func TestSelectAccountWithEmail(t *testing.T) {
 	req := db.SelectAccountReq{
 		Id:    "",
-		Email: "sample@example.com",
+		Email: "test001@example.com",
 	}
 	account, err := db.SelectAccountWithEmail(&req)
 	if err != nil {
@@ -51,4 +50,16 @@ func TestSelectAccountWithId(t *testing.T) {
 	fmt.Printf("CreatedAt: %v\n", account.CreatedAt)
 	fmt.Printf("UpdatedAt: %v\n", account.UpdatedAt)
 	//log.Printf("%v", account.String())
+}
+
+func TestSelectAccountWithEmail_NotFound(t *testing.T) {
+	req := db.SelectAccountReq{
+		Id:    "",
+		Email: "notfound@example.com",
+	}
+	account, err := db.SelectAccountWithId(&req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	log.Printf("%v", account)
 }

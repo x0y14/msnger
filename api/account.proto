@@ -7,6 +7,7 @@ option go_package = "github.com/x0y14/msnger/pkg/protobuf";
 
 
 // [NO-AUTH] CreateAccount ( CreateAccountRequest ) -> CreateAccountResult
+// insert
 message CreateAccountRequest {
   string email = 1;
   string password = 2;
@@ -17,6 +18,7 @@ message CreateAccountResult {
 }
 
 // [NO-AUTH] Login ( LoginRequest ) -> LoginResult
+// select
 message LoginRequest {
   string email = 1;
   string password = 2;
@@ -27,6 +29,7 @@ message LoginResult {
 }
 
 // [AUTH] GetEmail ( GetEmailRequest ) -> GetEmailResult
+// select
 message GetEmailRequest {}
 message GetEmailResult {
   string email = 1;

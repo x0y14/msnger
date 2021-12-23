@@ -31,7 +31,6 @@ func GenerateJWTToken(userId string) (string, error) {
 }
 
 func Authentication(ctx context.Context) (context.Context, error) {
-	//log.Printf("%v\n", ctx.Value("authorization"))
 	tokenStr, err := grpcAuth.AuthFromMD(ctx, "Bearer")
 	if err != nil {
 		return nil, fmt.Errorf("failed to pick up token: %v", err)

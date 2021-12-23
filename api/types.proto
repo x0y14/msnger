@@ -48,6 +48,18 @@ message User {
 }
 
 
+// account
+message Account {
+  string id = 1;
+  string email = 2;
+  string password = 3;
+  bool isAdmin = 4;
+
+  google.protobuf.Timestamp createdAt = 20;
+  google.protobuf.Timestamp updatedAt = 21;
+}
+
+
 // op
 enum OperationType {
   NOOP = 0;

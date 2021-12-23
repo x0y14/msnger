@@ -84,7 +84,7 @@ message Operation {
   google.protobuf.Timestamp updatedAt = 21;
 }
 
-message OperationInfo {
+message OpRelation {
   int32 revisionId = 1;
   string targetUserId = 2;
 }

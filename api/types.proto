@@ -51,9 +51,25 @@ message User {
 // op
 enum OperationType {
   NOOP = 0;
-  // user 100~
-  LOGIN = 100;
 
+  // ACCOUNT SERVICE 100~
+  CREATE_ACCOUNT = 100;
+  LOGIN = 101;
+  GET_EMAIL = 102;
+
+  // USER SERVICE 200~
+  CREATE_USER = 200;
+  GET_USER = 201;
+
+  // OP SERVICE 300~
+  FETCH_OPS = 300;
+  SEND_OP = 301;
+
+  // TALK SERVICE 400~
+  SEND_MESSAGE_SEND = 400;
+  SEND_MESSAGE_RECV = 401;
+  SEND_READ_RECEIPT_SEND = 402;
+  SEND_READ_RECEIPT_RECV = 403;
 }
 
 message Operation {

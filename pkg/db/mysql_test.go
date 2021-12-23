@@ -24,7 +24,7 @@ func TestStoreOp(t *testing.T) {
 		Param1:     "no4",
 		Param2:     "p2",
 		Param3:     "p3",
-		Msg:        msg,
+		Message:    msg,
 		CreatedAt:  nil,
 	}
 

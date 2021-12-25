@@ -38,6 +38,7 @@ func InsertAccount(req *InsertAccountReq) error {
 	if err != nil {
 		return err
 	}
+	defer ins.Close()
 	_, err = ins.Exec(req.Id, req.Email, req.Password, req.isAdmin)
 	if err != nil {
 		return err
@@ -47,6 +48,8 @@ func InsertAccount(req *InsertAccountReq) error {
 }
 
 func SelectAccountWithId(req *SelectAccountReq) (*protobuf.Account, error) {
+	PingAndReconnect()
+
 	row := MsngerDB.QueryRow(`select id, email, password, isAdmin, createdAt, updatedAt from msnger.Account where id = ? limit 1`, req.Id)
 
 	if row.Err() != nil {
@@ -84,6 +87,8 @@ func SelectAccountWithId(req *SelectAccountReq) (*protobuf.Account, error) {
 }
 
 func SelectAccountWithEmail(req *SelectAccountReq) (*protobuf.Account, error) {
+	PingAndReconnect()
+
 	row := MsngerDB.QueryRow(`select id, email, password, isAdmin, createdAt, updatedAt from msnger.Account where email = ? limit 1`, req.Email)
 
 	if row.Err() != nil {

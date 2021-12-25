@@ -13,15 +13,6 @@ create table msnger.Operation
     primary key (revisionId)
 );
 
-create table msnger.OpRelation
-(
-    id           int auto_increment NOT NULL,
-    revisionId   bigint unsigned NOT NULL,
-    targetUserId varchar(21) NOT NULL,
-
-    primary key (id)
-);
-
 create table msnger.Message
 (
     id          varchar(21) NOT NULL,
@@ -53,14 +44,25 @@ create table msnger.User
 create table msnger.Account
 (
     id varchar(21) NOT NULL,
-    email varchar(300) UNIQUE NOT NULL,
+    email varchar(300) NOT NULL,
     password text NOT NULL,
     isAdmin bit NOT NULL DEFAULT 0,
 
     createdAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    primary key(id)
+    primary key(id),
+    UNIQUE(email)
+);
+
+create table msnger.OpRelation
+(
+    id           int auto_increment NOT NULL,
+    revisionId   bigint unsigned NOT NULL,
+    targetUserId varchar(21) NOT NULL,
+
+    primary key (id),
+    UNIQUE (revisionId, targetUserId)
 );
 
 create table msnger.LastRevision

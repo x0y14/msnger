@@ -6,6 +6,11 @@ import (
 )
 
 func GenerateRevisionId() uint64 {
+	// 1537200202186752
+	// len = 16
+	// mysql -> unsigned bigint
+	// proto -> uint64
+	// go    -> uint64
 	id := snowflake.ID()
 	return id
 }

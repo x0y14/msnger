@@ -85,7 +85,7 @@ enum OperationType {
 }
 
 message Operation {
-  int32 revisionId = 1;
+  uint64 revisionId = 1;
   OperationType type = 2;
   string param1 = 3;
   string param2 = 4;
@@ -97,6 +97,6 @@ message Operation {
 }
 
 message OpRelation {
-  int32 revisionId = 1;
+  uint64 revisionId = 1;
   string targetUserId = 2;
 }

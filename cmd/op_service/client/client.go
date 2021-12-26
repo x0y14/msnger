@@ -61,7 +61,11 @@ func main() {
 		if err != nil {
 			log.Fatalf("failed to receive op from stream: %v", err)
 		}
-		log.Printf("GOT OP: %v\n", operation.String())
+		//if operation.Type == protobuf.OperationType_SEND_MESSAGE_RECV {
+		//	log.Printf("Receive Message: %v\n", operation.Message.Text)
+		//}
+		//log.Printf("GOT OP: %v\n", operation.String())
+		op.ShowOp(userId, operation)
 		lastRevisionId = operation.RevisionId
 	}
 }

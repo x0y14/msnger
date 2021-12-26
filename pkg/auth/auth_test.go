@@ -8,7 +8,7 @@ import (
 )
 
 func TestAuthentication(t *testing.T) {
-	userId := "aaaa4"
+	userId := "Uc73u05qs1s42mbb95rn0"
 	jwt, err := auth.GenerateJWTToken(userId)
 	if err != nil {
 		t.Fatal(err)

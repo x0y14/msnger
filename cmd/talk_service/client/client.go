@@ -1,15 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"flag"
 	"fmt"
 	"github.com/x0y14/msnger/pkg/protobuf"
 	"github.com/x0y14/msnger/pkg/service/account"
-	"github.com/x0y14/msnger/pkg/service/op"
+	"github.com/x0y14/msnger/pkg/service/talk"
 	"google.golang.org/grpc/metadata"
-	"io"
 	"log"
+	"os"
 )
 
 func main() {
@@ -38,30 +39,40 @@ func main() {
 	fmt.Printf("Your UserId: %v\n", userId)
 	fmt.Printf("Your Token: %v\n", token)
 
-	// fetch ops
-	var lastRevisionId uint64 = 0
-	opCl := *op.CreateClient("localhost:9292")
+	fmt.Printf("set message receiver >> ")
+	var receiverUserId string
+	stdin := bufio.NewScanner(os.Stdin)
+	if stdin.Scan() {
+		if err := stdin.Err(); err != nil {
+			log.Fatalf("%v", err)
+		}
+		receiverUserId = stdin.Text()
+	}
 
+	talkCl := *talk.CreateClient("localhost:9090")
 	bearer := "Bearer " + token
 	md := metadata.Pairs("authorization", bearer)
 	ctxAuthed := metadata.NewOutgoingContext(context.Background(), md)
 
-	//ctxAuthed := context.Background()
-
-	stream, err := opCl.FetchOps(ctxAuthed, &protobuf.FetchOpsRequest{LastRevisionId: lastRevisionId})
-	if err != nil {
-		log.Fatalf("failed to fetch op: %v", err)
-	}
-
+	fmt.Printf("--- [ user input (to %v) ] ---\n", receiverUserId)
+	var text string
 	for {
-		operation, err := stream.Recv()
-		if err == io.EOF {
-			break
+		fmt.Printf("you >> ")
+		if stdin.Scan() {
+			text = stdin.Text()
+			_, err = talkCl.SendMessage(ctxAuthed, &protobuf.SendMessageRequest{Message: &protobuf.Message{
+				Id:          "",
+				From:        userId,
+				To:          receiverUserId,
+				ContentType: protobuf.MessageType_TEXT,
+				Text:        text,
+				Metadata:    nil,
+				CreatedAt:   nil,
+				UpdatedAt:   nil,
+			}})
+			fmt.Printf("\t SENT = %v\n", text)
+		} else {
+			log.Fatalf("failed to read line: %v", stdin.Err())
 		}
-		if err != nil {
-			log.Fatalf("failed to receive op from stream: %v", err)
-		}
-		log.Printf("GOT OP: %v\n", operation.String())
-		lastRevisionId = operation.RevisionId
 	}
 }

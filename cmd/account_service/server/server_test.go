@@ -10,14 +10,14 @@ import (
 )
 
 const (
-	testUserEmail    = "test001@example.com"
+	testUserEmail    = "test008@example.com"
 	testUserPassword = "12345"
-	testUserId       = "Uc727m0is1s46dk46ivr0"
-	testUserToken    = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVYzcyN20waXMxczQ2ZGs0Nml2cjAifQ.MtWzvkXjEk5R_4HLs6gwAH-Hopcc8UWq2Go6tHRrnHI"
+	testUserId       = "Uc7401iqs1s4362f70sa0"
+	testUserToken    = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVYzc0MDFpcXMxczQzNjJmNzBzYTAifQ.5se5p4_FghHJod_JnzNo5AzTqHWiVJpSm1myMxQNzSA"
 )
 
 func TestCreateAccount(t *testing.T) {
-	cl := *account.CreateClient("localhost:9292")
+	cl := *account.CreateClient("localhost:9191")
 
 	result, err := cl.CreateAccount(context.Background(), &pb.CreateAccountRequest{
 		Email:    testUserEmail,
@@ -32,7 +32,7 @@ func TestCreateAccount(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-	cl := *account.CreateClient("localhost:9292")
+	cl := *account.CreateClient("localhost:9191")
 	result, err := cl.Login(context.Background(), &pb.LoginRequest{
 		Email:    testUserEmail,
 		Password: testUserPassword,

@@ -5,5 +5,6 @@
     <file url="file://$PROJECT_DIR$/pkg/db/account.go" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/pkg/db/mysql.go" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/pkg/db/op.go" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/pkg/db/talk.go" dialect="MySQL" />
   </component>
 </project>

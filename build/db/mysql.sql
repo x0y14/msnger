@@ -16,8 +16,8 @@ create table msnger.Operation
 create table msnger.Message
 (
     id          varchar(21) NOT NULL,
-    `to`        varchar(21) NOT NULL,
-    `from`      varchar(21) NOT NULL,
+    to_        varchar(21) NOT NULL,
+    from_      varchar(21) NOT NULL,
     contentType int         NOT NULL,
     text        varchar(1000),
     metadata    json        NOT NULL DEFAULT (JSON_OBJECT()),

@@ -1,9 +1,11 @@
 package db
 
 import (
+	"fmt"
 	"github.com/x0y14/msnger/pkg/misc"
 	"github.com/x0y14/msnger/pkg/protobuf"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"log"
 	"time"
 )
 
@@ -181,9 +183,11 @@ func insertOp(revisionId uint64, req *protobuf.Operation) error {
 		return err
 	}
 	defer ins.Close()
-	msgId := ""
-	if req.Message != nil {
-		msgId = req.Message.Id
+	var msgId string
+	if req.Message == nil {
+		msgId = ""
+	} else {
+		msgId = req.Param3
 	}
 	_, err = ins.Exec(revisionId, req.Type, req.Param1, req.Param2, req.Param3, msgId)
 	return err
@@ -216,7 +220,7 @@ func GetLastOpRevision(userId string) (uint64, error) {
 	var revisionId uint64
 	err := row.Scan(&revisionId)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to get revisionId of %v: %v", userId, err)
 	}
 	return revisionId, nil
 }
@@ -226,7 +230,8 @@ func GetLastOpRevision(userId string) (uint64, error) {
 func GetOpsBiggerThan(userId string, revisionId uint64) ([]*protobuf.Operation, error) {
 	PingAndReconnect()
 
-	rows, err := MsngerDB.Query(`select revisionId, type, param1, param2, param3, messageId, createdAt, updatedAt from msnger.Operation where param1 = ? and ? < revisionId`, userId, revisionId)
+	// todo : Opで検索するのではなく、OpRelationで検索して、見つけたIDでOPを探す。
+	rows, err := MsngerDB.Query(`select revisionId, type, param1, param2, param3, messageId, createdAt, updatedAt from msnger.Operation where (param1 = ? or param2 = ?) and ? < revisionId`, userId, userId, revisionId)
 	if err != nil {
 		return nil, err
 	}
@@ -239,17 +244,24 @@ func GetOpsBiggerThan(userId string, revisionId uint64) ([]*protobuf.Operation, 
 		var opData OperationData
 		err = rows.Scan(&opData.RevisionId, &opData.Type, &opData.Param1, &opData.Param2, &opData.Param3, &opData.MessageId, &opData.CreatedAt, &opData.UpdatedAt)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to get op %v: %v", userId, err)
 		}
 		// protobufのデータに変換
-		// todo : GetMessage
+		var msg *protobuf.Message
+		if opData.MessageId != "" {
+			msg, err = GetMessage(opData.MessageId)
+			if err != nil {
+				return nil, err
+			}
+		}
+		log.Printf("%v", msg.String())
 		op := protobuf.Operation{
 			RevisionId: opData.RevisionId,
 			Type:       protobuf.OperationType(opData.Type),
 			Param1:     opData.Param1,
 			Param2:     opData.Param2,
 			Param3:     opData.Param3,
-			Message:    nil,
+			Message:    msg,
 			CreatedAt:  timestamppb.New(opData.CreatedAt),
 			UpdatedAt:  timestamppb.New(opData.UpdatedAt),
 		}

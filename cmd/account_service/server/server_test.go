@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	testUserEmail    = "test008@example.com"
+	testUserEmail    = "tom@example.com"
 	testUserPassword = "12345"
 	testUserId       = "Uc7401iqs1s4362f70sa0"
 	testUserToken    = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVYzc0MDFpcXMxczQzNjJmNzBzYTAifQ.5se5p4_FghHJod_JnzNo5AzTqHWiVJpSm1myMxQNzSA"

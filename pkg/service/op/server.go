@@ -2,6 +2,7 @@ package op
 
 import (
 	"context"
+	"database/sql"
 	"github.com/x0y14/msnger/pkg/db"
 	pb "github.com/x0y14/msnger/pkg/protobuf"
 	"google.golang.org/grpc/codes"
@@ -43,6 +44,10 @@ func (s *ServiceServer) FetchOps(req *pb.FetchOpsRequest, stream pb.OpService_Fe
 		}
 		// 一致しなかった
 		operations, err := db.GetOpsBiggerThan(userId, LRIdHoldByUser)
+		if err == sql.ErrNoRows {
+			log.Printf("LRIdHoldByUser = %v, LRIdStoredOnDB = %v, But No Matche Ops\n", LRIdHoldByUser, LRIdStoredOnDB)
+			continue
+		}
 		if err != nil {
 			log.Printf("[Op] FetchOps Err: %v", err)
 			return status.Errorf(codes.Internal, "failed to get ops.")
